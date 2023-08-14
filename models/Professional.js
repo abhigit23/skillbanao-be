@@ -12,6 +12,10 @@ const professionalSchema = new mongoose.Schema({
     trim: true,
   },
 
+  role: {
+    type: String,
+  },
+
   phone: {
     type: String,
     required: [true, "Please provide a phone number!"],
