@@ -5,6 +5,12 @@ const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
 
 const register = async (req, res) => {
+  const { phone } = req.body;
+  const phoneAlreadyExists = await userModel.findOne({ phone });
+  if (phoneAlreadyExists) {
+    throw new BadRequestError("Phone number is already registered!");
+  }
+
   const user = await userModel.create({ ...req.body });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
@@ -48,4 +54,9 @@ const uploadImage = async (req, res) => {
   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 };
 
-module.exports = { register, login, uploadImage };
+const getAllUsers = async (req, res) => {
+  const users = await userModel.find({}).select("-password");
+  res.status(StatusCodes.OK).json({ users });
+};
+
+module.exports = { register, login, uploadImage, getAllUsers };

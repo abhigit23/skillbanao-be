@@ -1,10 +1,24 @@
 const proModel = require("../models/Professional");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthorizedError } = require("../errors");
+const {
+  BadRequestError,
+  UnauthorizedError,
+  NotFoundError,
+} = require("../errors");
 const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
 
 const register = async (req, res) => {
+  const { phone, email } = req.body;
+  const phoneAlreadyExists = await proModel.findOne({ phone });
+  if (phoneAlreadyExists) {
+    throw new BadRequestError("Phone number is already registered!");
+  }
+  const emailAlreadyExists = await proModel.findOne({ email });
+  if (emailAlreadyExists) {
+    throw new BadRequestError("Email Id is already registered!");
+  }
+
   const user = await proModel.create({ ...req.body });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
@@ -55,4 +69,39 @@ const uploadImage = async (req, res) => {
   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 };
 
-module.exports = { register, login, uploadImage };
+const getAllPros = async (req, res) => {
+  const pros = await proModel.find({}).select("-password");
+  res.status(StatusCodes.OK).json({ pros });
+};
+
+const verifyPro = async (req, res) => {
+  const { proId } = req.body;
+  const pro = await proModel.findOne({ _id: proId });
+  if (!pro) throw new NotFoundError(`No professional with ${proId} found!`);
+
+  pro.isVerified = true;
+  await pro.save();
+
+  res.status(StatusCodes.OK).json({ msg: "Verified Successfully!" });
+};
+
+const declinePro = async (req, res) => {
+  const { proId } = req.body;
+  const pro = await proModel.findOne({ _id: proId });
+  if (!pro) throw new NotFoundError(`No professional with ${proId} found!`);
+
+  await pro.deleteOne();
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "User declined and removed from the database!" });
+};
+
+module.exports = {
+  register,
+  login,
+  uploadImage,
+  getAllPros,
+  verifyPro,
+  declinePro,
+};

@@ -33,6 +33,11 @@ const userSchema = new mongoose.Schema({
     maxlength: 10,
   },
 
+  mainRole: {
+    type: String,
+    default: "user",
+  },
+
   password: {
     type: String,
     required: [true, "Please provide a password"],

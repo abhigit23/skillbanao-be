@@ -37,6 +37,8 @@ const professionalSchema = new mongoose.Schema({
     required: [true, "Please provide the gender!"],
   },
 
+  inQueue: Array,
+
   dob: {
     type: String,
     required: [true, "Please provide Date of Birth!"],
@@ -92,6 +94,16 @@ const professionalSchema = new mongoose.Schema({
 
   image: {
     type: String,
+  },
+
+  mainRole: {
+    type: String,
+    default: "professional",
+  },
+
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
 
   password: {
