@@ -56,6 +56,7 @@ const login = async (req, res) => {
       name: user.name,
       email: user.email,
       location: user.location,
+      isVerified: user.isVerified,
       token,
     },
   });
