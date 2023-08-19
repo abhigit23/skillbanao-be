@@ -79,3 +79,10 @@ exports.startChat = async (req, res) => {
 
   res.status(200).send("connection established outside");
 };
+
+exports.acceptRequest = async (req, res) => {
+  const io = req.socketConfig;
+  const { userId, professionalId } = req.body;
+  io.to(userId).emit("requestAccepted", professionalId);
+  res.status(200).send("Your request has been accepted!");
+};
