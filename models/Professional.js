@@ -18,9 +18,8 @@ const professionalSchema = new mongoose.Schema({
 
   phone: {
     type: String,
-    required: [true, "Please provide a phone number!"],
-    minlength: 10,
-    maxlength: 10,
+    match: [/^\d{10}$/, "Please provide a valid phone number"],
+    unique: true,
   },
 
   email: {
@@ -60,8 +59,8 @@ const professionalSchema = new mongoose.Schema({
   },
 
   pincode: {
-    type: Number,
-    required: [true, "Please provide Pincode!"],
+    type: String,
+    match: [/^\d{6}$/, "Please provide a valid pincode!"],
   },
 
   pSkills: {
@@ -74,6 +73,7 @@ const professionalSchema = new mongoose.Schema({
 
   language: {
     type: String,
+    required: [true, "Please provide language!"],
   },
 
   experience: {
