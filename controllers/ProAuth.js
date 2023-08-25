@@ -64,7 +64,7 @@ const login = async (req, res) => {
 const uploadImage = async (req, res) => {
   const result = await cloudinary.uploader.upload(
     req.files.image.tempFilePath,
-    { use_filename: true, folder: "professionals" }
+    { use_filename: true, folder: "skillbanao" }
   );
 
   fs.unlinkSync(req.files.image.tempFilePath);

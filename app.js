@@ -24,6 +24,7 @@ const connectDB = require("./db/connect");
 const userRouter = require("./routes/userRoutes");
 const proRouter = require("./routes/proRoutes");
 const chatRoute = require("./routes/chat");
+const blogRoute = require("./routes/blogRoutes");
 
 const notFoundMiddleware = require("./middleware/routeNotFound");
 const errorHandlerMiddleware = require("./middleware/errorHandler");
@@ -50,6 +51,7 @@ app.use(
   },
   chatRoute
 );
+app.use("/blog", blogRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
