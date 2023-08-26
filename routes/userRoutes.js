@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  authUser,
+  authorizedPermission,
+} = require("../middleware/authentication");
+
+const {
   register,
   login,
   uploadImage,
@@ -10,7 +15,17 @@ const {
 
 router.post("/register", register);
 router.post("/login", login);
-router.post("/uploadImage", uploadImage);
-router.get("/getAllUsers", getAllUsers);
+router.post(
+  "/uploadImage",
+  authUser,
+  authorizedPermission("admin"),
+  uploadImage
+);
+router.get(
+  "/getAllUsers",
+  authUser,
+  authorizedPermission("admin"),
+  getAllUsers
+);
 
 module.exports = router;

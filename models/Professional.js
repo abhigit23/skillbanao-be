@@ -73,7 +73,7 @@ const professionalSchema = new mongoose.Schema({
 
   language: {
     type: String,
-    required: [true, "Please provide language!"],
+    // required: [true, "Please provide language!"],
   },
 
   experience: {
@@ -98,7 +98,7 @@ const professionalSchema = new mongoose.Schema({
 
   mainRole: {
     type: String,
-    default: "professional",
+    // default: "professional",
   },
 
   isVerified: {
@@ -126,7 +126,7 @@ professionalSchema.pre("save", async function (next) {
 
 professionalSchema.methods.createJWT = function () {
   return jwt.sign(
-    { userId: this._id, name: this.name },
+    { userId: this._id, name: this.name, mainRole: this.mainRole },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_LIFETIME }
   );

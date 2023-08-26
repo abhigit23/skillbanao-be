@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { UnauthorizedError } = require("../errors");
+const { UnauthorizedError, ForbiddenError } = require("../errors");
 
 const authUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -10,11 +10,24 @@ const authUser = async (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const { name, userId, mainRole } = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+    req.user = { name, userId, mainRole };
     next();
   } catch (error) {
     throw new UnauthorizedError("Invalid Authentication!");
   }
 };
 
-module.exports = authUser;
+const authorizedPermission = (...roles) => {
+  return (req, res, next) => {
+    // console.log(req.user);
+    if (!roles.includes(req.user.mainRole))
+      throw new ForbiddenError("You aren't authorize to access this route");
+    next();
+  };
+};
+
+module.exports = { authUser, authorizedPermission };

@@ -14,7 +14,7 @@ const register = async (req, res) => {
     throw new BadRequestError("Phone number is already registered!");
   }
 
-  const user = await userModel.create({ ...req.body });
+  const user = await userModel.create({ ...req.body, mainRole: "user" });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
     user: {
@@ -42,6 +42,7 @@ const login = async (req, res) => {
       name: user.name,
       phone: user.phone,
       userId: user._id,
+      mainRole: user.mainRole,
       token,
     },
   });
@@ -50,7 +51,7 @@ const login = async (req, res) => {
 const uploadImage = async (req, res) => {
   const result = await cloudinary.uploader.upload(
     req.files.image.tempFilePath,
-    { use_filename: true, folder: "users" }
+    { use_filename: true, folder: "blogs" }
   );
 
   fs.unlinkSync(req.files.image.tempFilePath);

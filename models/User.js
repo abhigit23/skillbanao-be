@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
 
   mainRole: {
     type: String,
-    default: "user",
+    // default: "user",
   },
 
   password: {
@@ -57,7 +57,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.createJWT = function () {
   return jwt.sign(
-    { userId: this._id, name: this.name },
+    { userId: this._id, name: this.name, mainRole: this.mainRole },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_LIFETIME }
   );

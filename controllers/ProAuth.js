@@ -10,7 +10,7 @@ const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
 
 const register = async (req, res) => {
-  const { phone, email } = req.body;
+  const { phone, email, language } = req.body;
   const phoneAlreadyExists1 = await proModel.findOne({ phone });
   const phoneAlreadyExists2 = await userModel.findOne({ phone });
 
@@ -22,7 +22,9 @@ const register = async (req, res) => {
     throw new BadRequestError("Email Id is already registered!");
   }
 
-  const user = await proModel.create({ ...req.body });
+  if (!language) throw new BadRequestError("Please provide the language!");
+
+  const user = await proModel.create({ ...req.body, mainRole: "professional" });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
     user: {

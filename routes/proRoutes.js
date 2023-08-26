@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  authUser,
+  authorizedPermission,
+} = require("../middleware/authentication");
+
+const {
   register,
   login,
   uploadImage,
@@ -14,7 +19,12 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/uploadImage", uploadImage);
 router.get("/getAllPros", getAllPros);
-router.patch("/verifyPro", verifyPro);
-router.delete("/declinePro", declinePro);
+router.patch("/verifyPro", authUser, authorizedPermission("admin"), verifyPro);
+router.delete(
+  "/declinePro",
+  authUser,
+  authorizedPermission("admin"),
+  declinePro
+);
 
 module.exports = router;
