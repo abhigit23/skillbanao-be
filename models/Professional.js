@@ -18,7 +18,12 @@ const professionalSchema = new mongoose.Schema({
 
   phone: {
     type: String,
-    match: [/^\d{10}$/, "Please provide a valid phone number"],
+    validate: {
+      validator: function (value) {
+        return validator.isMobilePhone(value, "en-IN");
+      },
+      message: "Please provide a valid phone number!",
+    },
     unique: true,
   },
 
@@ -60,7 +65,12 @@ const professionalSchema = new mongoose.Schema({
 
   pincode: {
     type: String,
-    match: [/^\d{6}$/, "Please provide a valid pincode!"],
+    validate: {
+      validator: function (value) {
+        return validator.isPostalCode(value, "IN");
+      },
+      message: "Please provide a valid pincode!",
+    },
   },
 
   pSkills: {

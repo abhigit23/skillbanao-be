@@ -28,7 +28,12 @@ const userSchema = new mongoose.Schema({
 
   phone: {
     type: String,
-    match: [/^\d{10}$/, "Please provide a valid phone number"],
+    validate: {
+      validator: function (value) {
+        return validator.isMobilePhone(value, "en-IN");
+      },
+      message: "Please provide a valid phone number!",
+    },
     unique: true,
   },
 

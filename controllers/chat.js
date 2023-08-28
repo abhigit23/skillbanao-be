@@ -2,6 +2,8 @@ const BadRequestError = require("../errors/badRequest.js");
 const Professional = require("../models/Professional.js");
 const User = require("../models/User.js");
 
+const acceptedRequests = new Set();
+
 exports.addChat = async (req, res) => {
   try {
     const { userId, professionalId } = req.body;
@@ -32,6 +34,7 @@ exports.declineChat = async (req, res) => {
       { $pull: { inQueue: userId } },
       { new: true }
     );
+    acceptedRequests.delete(userId);
     if (!updatedResult) {
       return res.status(400).json({ message: "User not found" });
     }
@@ -67,9 +70,9 @@ exports.startChat = async (req, res) => {
     return res.status(400).send("please provide both ids");
   }
   io.on("connection", (socket) => {
-    console.log("A user connected", socket.id);
+    // console.log("A user connected", socket.id);
     socket.on("disconnect", () => {
-      console.log("A user disconnected");
+      // console.log("A user disconnected");
     });
     socket.on(`${userId}-${professionalId}-chat`, (message) => {
       // Broadcast the message to all connected sockets
@@ -84,5 +87,13 @@ exports.acceptRequest = async (req, res) => {
   const io = req.socketConfig;
   const { userId, professionalId } = req.body;
   io.to(userId).emit("requestAccepted", professionalId);
-  res.status(200).send("Your request has been accepted!");
+  acceptedRequests.add(userId);
+  // console.log(acceptedRequests);
+  res.status(200).json("Your request has been accepted!");
+};
+
+exports.requestCheck = async (req, res) => {
+  const { userId } = req.params;
+  const isAccepted = acceptedRequests.has(userId);
+  res.json({ isAccepted });
 };
