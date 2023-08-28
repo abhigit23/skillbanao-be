@@ -29,7 +29,7 @@ const blogRoute = require("./routes/blogRoutes");
 const notFoundMiddleware = require("./middleware/routeNotFound");
 const errorHandlerMiddleware = require("./middleware/errorHandler");
 
-app.use(cors());
+app.use(cors({ origin: process.env.ORIGIN }));
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
 
