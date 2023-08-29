@@ -2,9 +2,8 @@
   "name": "skillbanao-be",
   "version": "1.0.0",
   "description": "",
-  "main": "App.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
@@ -24,9 +23,6 @@
     "mongoose": "^7.4.3",
     "socket.io": "^4.7.2",
     "validator": "^13.11.0"
-  },
-  "engines": {
-    "node": ">=16"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
