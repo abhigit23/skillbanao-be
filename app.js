@@ -3,11 +3,16 @@ require("express-async-errors");
 
 const express = require("express");
 const app = express();
-const http = require("http");
-const socketIo = require("socket.io");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
-const server = http.createServer(app);
-const io = socketIo(server);
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.ORIGIN,
+    credentials: true,
+  },
+});
 
 const fileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
@@ -62,7 +67,7 @@ const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
     console.log("Connected to MongoDB...");
-    server.listen(port, () =>
+    httpServer.listen(port, () =>
       console.log(`Server is listening to port ${port}...`)
     );
   } catch (error) {
