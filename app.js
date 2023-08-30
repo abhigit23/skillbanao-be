@@ -6,6 +6,8 @@ const app = express();
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
+const cors = require("cors");
+
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -23,7 +25,6 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-const cors = require("cors");
 const connectDB = require("./db/connect");
 
 const userRouter = require("./routes/userRoutes");
