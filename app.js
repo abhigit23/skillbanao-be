@@ -23,13 +23,13 @@ const connectDB = require("./db/connect");
 
 const userRouter = require("./routes/userRoutes");
 const proRouter = require("./routes/proRoutes");
-const chatRoute = require("./routes/chat");
+const chatRoute = require("./routes/chatRoutes");
 const blogRoute = require("./routes/blogRoutes");
 
 const notFoundMiddleware = require("./middleware/routeNotFound");
 const errorHandlerMiddleware = require("./middleware/errorHandler");
 
-app.use(cors({ origin: process.env.ORIGIN }));
+app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
 
