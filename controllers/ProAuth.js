@@ -11,10 +11,9 @@ const cloudinary = require("cloudinary").v2;
 
 const register = async (req, res) => {
   const { phone, email, language } = req.body;
-  const phoneAlreadyExists1 = await proModel.findOne({ phone });
-  const phoneAlreadyExists2 = await userModel.findOne({ phone });
+  const phoneAlreadyExists = await proModel.findOne({ phone });
 
-  if (phoneAlreadyExists1 || phoneAlreadyExists2) {
+  if (phoneAlreadyExists) {
     throw new BadRequestError("Phone number is already registered!");
   }
   const emailAlreadyExists = await proModel.findOne({ email });

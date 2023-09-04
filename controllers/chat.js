@@ -76,6 +76,7 @@ exports.startChat = async (req, res) => {
     });
     socket.on(`${userId}-${professionalId}-chat`, (message) => {
       // Broadcast the message to all connected sockets
+      // console.log(message);
       io.emit(`${userId}-${professionalId}-chat`, message);
     });
   });

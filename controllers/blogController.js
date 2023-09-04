@@ -1,3 +1,4 @@
+const { BadRequestError } = require("../errors");
 const blogModel = require("../models/Blog");
 const { StatusCodes } = require("http-status-codes");
 
@@ -19,7 +20,15 @@ const showBlogs = async (req, res) => {
   res.status(StatusCodes.OK).json({ blogs });
 };
 
+const deleteBlog = async (req, res) => {
+  const { blogId } = req.body;
+  const blog = await blogModel.findByIdAndDelete({ _id: blogId });
+  if (!blog) throw new BadRequestError("Blog not found!");
+  res.status(StatusCodes.OK).json({ msg: "Blog removed successfully!" });
+};
+
 module.exports = {
   addBlog,
   showBlogs,
+  deleteBlog,
 };

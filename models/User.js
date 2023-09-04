@@ -51,6 +51,8 @@ const userSchema = new mongoose.Schema({
         "Password should contain atleast 8 letters with 1 uppercase, 1 lowercase, 1 number and 1 symbol",
     },
   },
+
+  usedCoupons: Array,
 });
 
 userSchema.pre("save", async function (next) {
