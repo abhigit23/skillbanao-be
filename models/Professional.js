@@ -3,6 +3,11 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 
+const inQueueSchema = new mongoose.Schema({
+  userId: String,
+  timestamp: Date,
+});
+
 const professionalSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -41,7 +46,7 @@ const professionalSchema = new mongoose.Schema({
     required: [true, "Please provide the gender!"],
   },
 
-  inQueue: Array,
+  inQueue: [inQueueSchema],
 
   dob: {
     type: String,
