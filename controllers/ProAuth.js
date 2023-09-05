@@ -74,8 +74,29 @@ const uploadImage = async (req, res) => {
 };
 
 const getAllPros = async (req, res) => {
+  const pros = await proModel.find({}).select({
+    name: 1,
+    role: 1,
+    language: 1,
+    experience: 1,
+    image: 1,
+    isVerified: 1,
+  });
+  res.status(StatusCodes.OK).json({ pros });
+};
+
+const getProsAdmin = async (req, res) => {
   const pros = await proModel.find({}).select("-password");
   res.status(StatusCodes.OK).json({ pros });
+};
+
+const getSinglePro = async (req, res) => {
+  const { proId } = req.params;
+  const professional = await userModel
+    .findOne({ _id: proId })
+    .select("-password");
+  if (!professional) throw BadRequestError("Professional not found!");
+  res.status(StatusCodes.OK).json({ professional });
 };
 
 const verifyPro = async (req, res) => {
@@ -87,6 +108,17 @@ const verifyPro = async (req, res) => {
   await pro.save();
 
   res.status(StatusCodes.OK).json({ msg: "Verified Successfully!" });
+};
+
+const unVerifyPro = async (req, res) => {
+  const { proId } = req.body;
+  const pro = await proModel.findOne({ _id: proId });
+  if (!pro) throw new NotFoundError(`No professional with ${proId} found!`);
+
+  pro.isVerified = false;
+  await pro.save();
+
+  res.status(StatusCodes.OK).json({ msg: "Unverified Successfully!" });
 };
 
 const declinePro = async (req, res) => {
@@ -106,6 +138,9 @@ module.exports = {
   login,
   uploadImage,
   getAllPros,
+  getProsAdmin,
+  getSinglePro,
   verifyPro,
   declinePro,
+  unVerifyPro,
 };

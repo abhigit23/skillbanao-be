@@ -17,8 +17,8 @@ const deleteCoupon = async (req, res) => {
 };
 
 const showCoupons = async (req, res) => {
-  const coupon = await couponModel.find({});
-  res.status(StatusCodes.OK).json({ coupon });
+  const coupons = await couponModel.find({});
+  res.status(StatusCodes.OK).json({ coupons });
 };
 
 module.exports = { addCoupon, deleteCoupon, showCoupons };

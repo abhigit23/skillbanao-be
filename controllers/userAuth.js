@@ -63,4 +63,11 @@ const getAllUsers = async (req, res) => {
   res.status(StatusCodes.OK).json({ users });
 };
 
-module.exports = { register, login, uploadImage, getAllUsers };
+const getSingleUser = async (req, res) => {
+  const { userId } = req.params;
+  const user = await userModel.findOne({ _id: userId }).select("-password");
+  if (!user) throw BadRequestError("User not found!");
+  res.status(StatusCodes.OK).json({ user });
+};
+
+module.exports = { register, login, uploadImage, getAllUsers, getSingleUser };

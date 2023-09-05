@@ -11,6 +11,7 @@ const {
   login,
   uploadImage,
   getAllUsers,
+  getSingleUser,
 } = require("../controllers/userAuth");
 
 router.post("/register", register);
@@ -27,5 +28,6 @@ router.get(
   authorizedPermission("admin"),
   getAllUsers
 );
+router.get("/getUser/:userId", authUser, getSingleUser);
 
 module.exports = router;
