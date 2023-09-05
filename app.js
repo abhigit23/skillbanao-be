@@ -33,6 +33,7 @@ const chatRoute = require("./routes/chatRoutes");
 const blogRoute = require("./routes/blogRoutes");
 const couponRoute = require("./routes/couponRoutes");
 const authRoute = require("./routes/authRoute");
+const detailRoute = require("./routes/detailRoute");
 
 const notFoundMiddleware = require("./middleware/routeNotFound");
 const errorHandlerMiddleware = require("./middleware/errorHandler");
@@ -62,6 +63,7 @@ app.use(
 app.use("/blog", blogRoute);
 app.use("/coupon", couponRoute);
 app.use("/auth", authRoute);
+app.use("/website", detailRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
