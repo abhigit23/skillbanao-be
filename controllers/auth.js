@@ -10,7 +10,10 @@ const accessTokenVerify = async (req, res) => {
     if (err)
       throw new UnauthorizedError("Session expired! Please log in again!");
 
-    res.status(200).json({ msg: "User authenticated!", data });
+    res.status(200).json({
+      msg: "User authenticated!",
+      data: { userId: data.userId, name: data.name, mainRole: data.mainRole },
+    });
   });
 };
 

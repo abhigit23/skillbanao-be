@@ -54,7 +54,6 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({
     user: {
       name: user.name,
-      // email: user.email,
       isVerified: user.isVerified,
       proId: user._id,
       image: user.image,
@@ -75,13 +74,14 @@ const uploadImage = async (req, res) => {
 };
 
 const getAllPros = async (req, res) => {
-  const pros = await proModel.find({}).select({
+  const pros = await proModel.find({ isVerified: true }).select({
     name: 1,
     role: 1,
     language: 1,
     experience: 1,
     image: 1,
-    isVerified: 1,
+    // isVerified: 1,
+    gender: 1,
   });
   res.status(StatusCodes.OK).json({ pros });
 };
