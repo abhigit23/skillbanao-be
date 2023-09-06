@@ -54,9 +54,10 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({
     user: {
       name: user.name,
-      email: user.email,
+      // email: user.email,
       isVerified: user.isVerified,
       proId: user._id,
+      image: user.image,
       token,
     },
   });
