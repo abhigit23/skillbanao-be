@@ -79,6 +79,11 @@ exports.showUserList = async (req, res) => {
   }
 };
 
+exports.pendingChats = async (req, res) => {
+  const pro = await Professional.find({ inQueue: { $ne: [] } });
+  res.status(200).json({ chats: pro });
+};
+
 exports.startChat = async (req, res) => {
   const io = req.socketConfig;
   const { userId, professionalId } = req.body;
